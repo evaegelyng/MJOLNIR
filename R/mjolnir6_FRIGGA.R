@@ -12,22 +12,22 @@
 
 mjolnir6_FRIGGA <- function(lib=NULL){
   # sept = separator characters used in taxonomy-annotated file and abundances file, respectively (default: ';;' )
-  message("FRYGGA will produce a combined file.")
+  message("FRIGGA will produce a combined file.")
 
   infile=paste0(lib,"_ecotag_annotated.tsv")
   abundances=paste0(lib,"_SWARM_output_counts.tsv")
   outfile=paste0(lib,"_All_MOTUs.tsv")
 
-  message("FRYGGA is reading the ecotag-annotated database from THOR...")
+  message("FRIGGA is reading the ecotag-annotated database from THOR...")
   ecotag_db <- read.table(infile,sep="\t",head=T,stringsAsFactors=F)
-  message("FRYGGA has read the taxonomy database, with ", nrow(ecotag_db)," total MOTUs.")
+  message("FRIGGA has read the taxonomy database, with ", nrow(ecotag_db)," total MOTUs.")
   # Delete "None" from the taxonomy database
   ecotag_db[ecotag_db=="None"] <- ""
 
-  message("FRYGGA is reading the abundances database from ODIN...")
+  message("FRIGGA is reading the abundances database from ODIN...")
   abun_db <- read.table(abundances,sep="\t",head=T,stringsAsFactors=F)
   n_samples <- ncol(abun_db[,substr(names(abun_db),1,7)=="sample."])
-  message("FRYGGA has read the abundances database, including ", nrow(abun_db)," total MOTUs and ",n_samples," samples.")
+  message("FRIGGA has read the abundances database, including ", nrow(abun_db)," total MOTUs and ",n_samples," samples.")
 
   # Merge databases
   db <- merge(ecotag_db,abun_db,by="id")
@@ -45,7 +45,7 @@ mjolnir6_FRIGGA <- function(lib=NULL){
   db <- db[,c(1:4,ncol(db)-1,ncol(db)-2,5:ncol(db)-3,ncol(db))]
 
   write.table(db,outfile,sep="\t",quote=F,row.names=F)
-  message("FRYGGA is done. File ", outfile, " written, including ",nrow(db)," MOTUs with ",sum(db$total_reads)," total reads in ",n_samples," samples.")
+  message("FRIGGA is done. File ", outfile, " written, including ",nrow(db)," MOTUs with ",sum(db$total_reads)," total reads in ",n_samples," samples.")
   message("(",nrow(db[db$total_reads>1,])," non-singletons MOTUs).")
 }
 
